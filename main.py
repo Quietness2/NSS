@@ -13,7 +13,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+ADMIN_KEY = os.getenv("ADMIN_KEY", "testing.passwd.maintenance")
 MAINTENANCE = os.getenv("MAINTENANCE", "false").lower() == "true"
+
 class ScoreEntry(BaseModel):
     player: str
     song_id: str
