@@ -22,7 +22,7 @@ class ScoreEntry(BaseModel):
 def root():
     return {"status": "online", "service": "NSS Backend"}
 
-@app.get("/sys_state")
+@app.get("/system@mode")
 def get_sys_state():
     return {"state": "working", "version": "1.0.0"}
 
