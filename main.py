@@ -12,7 +12,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
+MAINTENANCE = os.getenv("MAINTENANCE", "false").lower() == "true"
 class ScoreEntry(BaseModel):
     player: str
     song_id: str
