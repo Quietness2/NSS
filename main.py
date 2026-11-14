@@ -27,6 +27,13 @@ def root():
 def get_sys_state():
     return {"state": "working", "version": "1.0.0"}
 
+@app.post("/admin/maintenance")
+def set_maintenance(enabled: bool, x_admin_key: str = Header(...)):
+    if x_admin_key != ADMIN_KEY:
+        raise HTTPException(status_code=403, detail="Invalid admin key")
+    server_config["Maintenance"] = enabled
+    return {"Maintenance": server_config["Maintenance"]}
+
 @app.post("/submit_score")
 def submit_score(entry: ScoreEntry):
     return {
