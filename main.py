@@ -3,8 +3,10 @@ import asyncio
 import httpx
 from fastapi import FastAPI, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
+from routers import events, system
 
 app = FastAPI()
+app.include_router(events.router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -13,6 +15,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 async def keep_alive():
     """Background task that pings the server every 5 minutes to prevent Render from spinning down."""
     while True:
