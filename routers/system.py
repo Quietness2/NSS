@@ -8,7 +8,7 @@ SYSTEM_STATE = {
     "version": "1.0.0"
 }
 
-@router.get("/sys_state")
+@router.get("/system@mode")
 def get_system_state():
     return SYSTEM_STATE
 
