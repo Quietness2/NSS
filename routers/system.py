@@ -5,7 +5,7 @@ router = APIRouter(tags=["system"])
 
 # System state tracking using your "system@mode" structure
 SYSTEM_STATE = {
-    "system@mode": "normal",  # Can be changed to "maintenance" when needed
+    "system@mode": "available",  # Can be changed to "maintenance" when needed
     "version": "1.0.0",
 }
 
