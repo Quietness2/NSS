@@ -1,4 +1,6 @@
 import os
+import asyncio
+import httpx
 from fastapi import FastAPI, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -11,6 +13,16 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+async def keep_alive():
+    """Background task that pings the server every 5 minutes to prevent Render from spinning down."""
+    while True:
+        await asyncio.sleep(300) # 300 seconds = 5 minutes
+        try:
+            async with httpx.AsyncClient() as client:
+                # Replace with your actual live Render URL
+                await client.get("https://nss-47ky.onrender.com/ping")
+        except Exception as err:
+            print(f"Keep-alive ping failed: {err}")
 
 ADMIN_KEY = os.getenv("ADMIN_KEY", "testing.passwd.maintenance")
 
@@ -19,6 +31,11 @@ server_config = {
     "Maintenance": os.getenv("MAINTENANCE", "false").lower() == "true",
     "version": "1.0.0"
 }
+
+@app.on_event("startup")
+async def startup_event():
+    # Start the background loop as soon as FastAPI boots up
+    asyncio.create_task(keep_alive())
 
 @app.get("/")
 def root():
